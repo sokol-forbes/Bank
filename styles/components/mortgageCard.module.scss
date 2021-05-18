@@ -1,0 +1,21 @@
+.card {
+  background: rgb(143,94,232);
+  box-shadow: 6px 14px 53px -8px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 20px;
+  color: #fff;
+}
+
+.description {
+  word-break: break-word;
+  background-color: rgb(128, 85, 207);
+  border-radius: 10px;
+  padding: 10px;
+  height: 150px;
+  overflow: auto;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,23 @@
+.footer {
+  // background-color: rgba(33, 9, 78, 0.7);
+
+  &__container {
+  }
+
+  &__upper {
+    // background-color: rgba(33, 9, 78, 0.1);
+    padding: 20px 0;
+  }
+
+  &__icon {
+    height: 100px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+    opacity: .7;
+
+    @media screen and (max-width: 767px) {
+      height: 40px;
+    }
+  }
+}

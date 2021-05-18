@@ -1,0 +1,45 @@
+{
+  "name": "bank",
+  "version": "1.0.0",
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.6.0",
+    "config": "^3.3.6",
+    "connect-multiparty": "^2.2.0",
+    "express": "^4.17.1",
+    "express-form-data": "^2.0.14",
+    "express-validator": "^6.10.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.12.0",
+    "multer": "^1.4.2",
+    "next": "^10.0.0",
+    "node-sass": "^5.0.0",
+    "nodemon": "^2.0.7",
+    "nookies": "^2.5.2",
+    "notiflix": "^2.7.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "reactstrap": "^8.9.0",
+    "uuid": "^3.4.0"
+  },
+  "license": "MIT",
+  "description": "Bank system",
+  "main": "server.js",
+  "keywords": [
+    "bank",
+    "system",
+    "credit"
+  ],
+  "author": "Alexander Sokolovsky <sasha.sokolovsky01@gmail.com>"
+}

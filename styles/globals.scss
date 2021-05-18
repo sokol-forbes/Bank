@@ -1,0 +1,78 @@
+@import './typography.scss';
+@import 'animate.css';
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Nunito', sans-serif !important;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#__next {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgb(134, 96, 204);
+  background: linear-gradient(
+    151deg,
+    rgba(134, 96, 204, 1) 0%,
+    rgba(152, 9, 76, 1) 100%
+  );
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+label {
+  color: #343a40;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+main {
+  flex-grow: 1;
+  margin: 50px 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+a {
+  cursor: pointer;
+}
+
+.modal-header {
+  font-size: 24px;
+}
+
+.notiflix-notify {
+  top: 70px;
+}
+
+.dropdown-toggle::after {
+  vertical-align: 0.155em !important;
+  border-radius: 2px;
+}
+
+.nav-link {
+  padding: 0 !important;
+}
+
+.btn-primary {
+  background-color: #6743a8 !important;
+  min-width: 100px;
+  border: none !important;
+}

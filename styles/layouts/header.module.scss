@@ -1,0 +1,18 @@
+.header {
+  
+  &__navbar {
+    background-color: transparent !important;
+  }
+
+  &__avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+}
+
+.logo {
+  height: 50px;
+}

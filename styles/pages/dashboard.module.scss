@@ -1,0 +1,15 @@
+.dashboard {
+  &__chestImage {
+    height: 60px;
+    user-select: none;
+  }
+}
+
+.users {
+  &__avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}

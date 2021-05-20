@@ -23,6 +23,7 @@ app.prepare().then(() => {
     useCreateIndex: true,
   });
 
+  server.use('/api/math', require('./routes/math.routes'));
   server.use('/api/auth', require('./routes/auth.routes'));
   server.use('/api/user', require('./routes/user.routes'));
   server.use('/api/mortgages', require('./routes/mortgage.routes'));

@@ -18,12 +18,12 @@ import {
   Table,
 } from 'reactstrap';
 import MortgageCard from '../components/mortgageCard';
+import MathData from '../components/mathData';
 
 import { parseCookies } from 'nookies';
 
 import useMessage from '../hooks/useMessage';
 import MainLayout from '../components/layouts/main';
-import { probabilities } from '../utils/gameMethods';
 
 const Dashboard = (props) => {
   const { loading, request } = useHttp();
@@ -44,6 +44,24 @@ const Dashboard = (props) => {
 
   const user = useUser();
   const router = useRouter();
+
+  const handleDeleteUser = async (userToRemove) => {
+    if (confirm(`Вы уверены что хотите удалить ${userToRemove.nickname}?`)) {
+      try {
+        const data = await request(
+          `/api/user/${userToRemove._id}`,
+          'DELETE',
+          null,
+          { Authorization: `Bearer ${user.token}` }
+        );
+
+        setUsers(data.users);
+        setSuccess(data.message);
+      } catch (e) {
+        setError(e.message);
+      }
+    }
+  };
 
   const handleAddMortgage = async (e) => {
     e.preventDefault();
@@ -70,14 +88,13 @@ const Dashboard = (props) => {
 
     try {
       const data = await request(
-        `/api/user/${selectedUser._id}/update`,
+        `/api/user/${selectedUser._id}`,
         'PATCH',
         updateUserFields,
         { Authorization: `Bearer ${user.token}` }
       );
 
       setUsers(data.users);
-      setSelectedUser(data.users.find(user => user._id === selectedUser._id));
       setSuccess(data.message);
     } catch (e) {
       setError(e.message);
@@ -94,7 +111,7 @@ const Dashboard = (props) => {
       );
 
       setUsers(data.users);
-      setSelectedUser(data.users.find(user => user._id === selectedUser._id));
+      setSelectedUser(data.users.find((user) => user._id === selectedUser._id));
       setSuccess(data.message);
     } catch (e) {
       setError(e.message);
@@ -206,6 +223,7 @@ const Dashboard = (props) => {
                   <th>ФИО</th>
                   <th>Админ</th>
                   <th>Информация</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -233,6 +251,16 @@ const Dashboard = (props) => {
                           >
                             Показать
                           </Button>
+                        )}
+                      </td>
+                      <td>
+                        {!user.isAdmin && (
+                          <img
+                            src="icons/trash.svg"
+                            alt=""
+                            className={styles.users__deleteIcon}
+                            onClick={() => handleDeleteUser(user)}
+                          />
                         )}
                       </td>
                     </tr>
@@ -289,7 +317,7 @@ const Dashboard = (props) => {
                           })
                         }
                       >
-                        {!!probabilities?.length ? (
+                        {!!props.mathData.probabilities?.length ? (
                           <>
                             <option value={-1}>
                               Метод байаса по выйгрышам
@@ -315,6 +343,7 @@ const Dashboard = (props) => {
                           id="koef"
                           min={0}
                           max={1}
+                          step={0.0000000001}
                           value={updateUserFields.koef}
                           onChange={(e) =>
                             setUpdateUserFields({
@@ -340,6 +369,7 @@ const Dashboard = (props) => {
                 </Form>
               </Modal>
             )}
+            <MathData data={props.mathData} users={users} mortgages={mortgages} />
           </>
         ) : (
           <>
@@ -377,11 +407,14 @@ export async function getServerSideProps(context) {
   const user =
     userJSON != null ? JSON.parse(userJSON) : { isAuthenticated: false };
 
+  let res;
+
   let mortgages = [];
   let users = [];
+  let mathData = [];
 
   try {
-    let res = await fetch(`${process.env.SERVER_URL}/api/mortgages/`);
+    res = await fetch(`${process.env.SERVER_URL}/api/mortgages/`);
     mortgages = await res.json();
 
     res = await fetch(`${process.env.SERVER_URL}/api/user/users`, {
@@ -390,11 +423,14 @@ export async function getServerSideProps(context) {
       },
     });
     users = await res.json();
+
+    res = await fetch(`${process.env.SERVER_URL}/api/math/data`);
+    mathData = await res.json();
   } catch (e) {
     console.log(e);
   }
 
   return {
-    props: { mortgages, users },
+    props: { mortgages, users, mathData },
   };
 }

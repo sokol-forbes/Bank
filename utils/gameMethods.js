@@ -24,7 +24,7 @@ const risk_matrix = [
   [0.898112, 0.898721, 0.899076, 0.899329, 0.899525, 0.899685, 0.899821, 0.899938, 0.900042],
 ];
 
-// const probabilities = [ 0.1, 0.07, 0.08, 0.25, 0.05, 0.02, 0.12, 0.09, 0.08, 0.14 ];
+const defaultProbabilities = [ 0.1, 0.07, 0.08, 0.25, 0.05, 0.02, 0.12, 0.09, 0.08, 0.14 ];
 const probabilities = null;
 
 const solutions = [ 5, 7, 12, 15, 17, 20, 21, 25, 30 ];
@@ -205,4 +205,4 @@ function game_method(choice, koef) {
   }
 }
 
-module.exports = { game_method, probabilities };
+module.exports = { game_method, probabilities, defaultProbabilities };

@@ -21,6 +21,7 @@ const schema = new Schema({
       mark: Number,
       risk: Number,
       sum: Number,
+      date: Date,
     },
   ],
   gameMethod: Number,

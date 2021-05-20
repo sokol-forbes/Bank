@@ -34,7 +34,7 @@ const uploadAvatar = multer({ storage, fileFilter }).single('avatar');
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) return res.sendStatus(401);
+  if (token == null) return res.status(401).json({ message: 'Вы не авторизованы.' });;
 
   jwt.verify(token, config.get('jwtSecret'), async (err, decoded) => {
     if (err)
@@ -135,43 +135,7 @@ router.patch('/:userId/closeMortgage/:mortgageId', authenticateToken, async (req
 
     const users = await User.find({});
 
-    res.status(201).json({ users, message: 'Ипотека отключена!' });
-  } catch (e) {
-    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова.' });
-  }
-});
-
-router.patch('/:userId/update', authenticateToken, async (req, res) => {
-  try {
-    const { gameMethod, koef } = req.body;
-    const { user } = req;
-
-    if (!user) {
-      return res.status(400).json({ message: 'Неактивная сессия.' });
-    }
-
-    if (!user.isAdmin) {
-      return res.status(500).json({
-        message: 'Вы должны быть администратором чтобы выполнить это действие.',
-      });
-    }
-
-    const { userId } = req.params;
-
-    const candidate = await User.findOne({ _id: userId });
-
-    if (!candidate) {
-      return res.status(400).json({ message: 'Такого пользователя не существует.' });
-    }
-
-    candidate.gameMethod = gameMethod;
-    candidate.koef = koef;
-
-    await candidate.save();
-
-    const users = await User.find({});
-
-    res.status(201).json({ users, message: 'Метод расчёта изменен!' });
+    res.status(200).json({ users, message: 'Ипотека отключена!' });
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова.' });
   }
@@ -207,11 +171,11 @@ router.patch(
 
       const { gameMethod, koef } = user;
 
-      user.links.push({ mortgageId: id, ...game_method(gameMethod, koef), sum });
+      user.links.push({ mortgageId: id, ...game_method(gameMethod, koef), sum, date: new Date() });
 
       await user.save();
 
-      res.status(201).json({ links: user.links, message: 'Ипотека взята!' });
+      res.status(200).json({ links: user.links, message: 'Ипотека взята!' });
     } catch (e) {
       res
         .status(500)
@@ -238,6 +202,74 @@ router.get('/users', authenticateToken, async (req, res) => {
     const users = await User.find({});
 
     res.status(200).json(users);
+  } catch (e) {
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова.' });
+  }
+});
+
+router.delete('/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(400).json({ message: 'Неактивная сессия.' });
+    }
+
+    if (!user.isAdmin) {
+      return res.status(500).json({
+        message: 'Вы должны быть администратором чтобы выполнить это действие.',
+      });
+    }
+
+    const { userId } = req.params;
+
+    await User.findOneAndDelete({ _id: userId }, (err) => {
+      if (err) {
+        return res.status(500).json({
+          message: 'Не удалось удалить пользователя.',
+        });
+      }
+    });
+
+    const users = await User.find({});
+
+    res.status(200).json({ users, message: 'Пользователь удалён!' });
+  } catch (e) {
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова.' });
+  }
+});
+
+router.patch('/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { gameMethod, koef } = req.body;
+    const { user } = req;
+
+    if (!user) {
+      return res.status(400).json({ message: 'Неактивная сессия.' });
+    }
+
+    if (!user.isAdmin) {
+      return res.status(500).json({
+        message: 'Вы должны быть администратором чтобы выполнить это действие.',
+      });
+    }
+
+    const { userId } = req.params;
+
+    const candidate = await User.findOne({ _id: userId });
+
+    if (!candidate) {
+      return res.status(400).json({ message: 'Такого пользователя не существует.' });
+    }
+
+    candidate.gameMethod = gameMethod;
+    candidate.koef = koef;
+
+    await candidate.save();
+
+    const users = await User.find({});
+
+    res.status(200).json({ users, message: 'Метод расчёта изменен!' });
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова.' });
   }

@@ -4,12 +4,6 @@ const User = require('../models/User');
 const MathData = require('../models/MathData');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { check, validationResult } = require('express-validator');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-const { game_method } = require('../utils/gameMethods');
 
 const defaultData = {
   benefitMatrix: JSON.stringify([

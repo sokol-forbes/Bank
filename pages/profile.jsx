@@ -77,12 +77,12 @@ const Profile = () => {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="name">Ник на сервере</Label>
+            <Label for="name">Логин:</Label>
             <Input
               type="text"
-              name="nickname"
-              id="nickname"
-              defaultValue={user.nickname}
+              name="username"
+              id="username"
+              defaultValue={user.username}
             />
           </FormGroup>
           <Button color="primary">Submit</Button>

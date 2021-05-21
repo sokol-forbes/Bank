@@ -18,6 +18,7 @@ const useMessage = (body) => {
       clickToClose: true,
       distance: '100px 10px',
       fontFamily: 'Nunito',
+      position: 'left-top',
     });
   }, []);
 

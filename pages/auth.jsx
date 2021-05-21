@@ -14,12 +14,12 @@ const AuthPage = () => {
 
   const [activeTab, setActiveTab] = useState('1');
   const [loginForm, setLoginForm] = useState({
-    nickname: '',
+    username: '',
     password: '',
   });
   
   const [registerForm, setRegisterForm] = useState({
-    nickname: '',
+    username: '',
     password: '',
   });
 
@@ -65,13 +65,12 @@ const AuthPage = () => {
         <TabPane tabId="1">
           <Form onSubmit={loginHandler} className="border border-top-0 p-3 rounded-bottom shadow bg-white">
             <FormGroup>
-              <Label for="nickname">Ник на сервере:</Label>
+              <Label for="username">Логин:</Label>
               <Input
                 type="text"
-                name="nickname"
-                placeholder="MaksTandarT"
-                value={loginForm.nickname}
-                onChange={e => setLoginForm({ ...loginForm, nickname: e.target.value })}
+                name="username"
+                value={loginForm.username}
+                onChange={e => setLoginForm({ ...loginForm, username: e.target.value })}
               />
             </FormGroup>
             <FormGroup>
@@ -79,7 +78,6 @@ const AuthPage = () => {
               <Input
                 type="password"
                 name="password"
-                placeholder="Пароль"
                 value={loginForm.password}
                 onChange={e => setLoginForm({ ...loginForm, password: e.target.value })}
               />
@@ -90,13 +88,12 @@ const AuthPage = () => {
         <TabPane tabId="2">
         <Form onSubmit={registerHandler} className="border border-top-0 p-3 rounded-bottom shadow bg-white">
           <FormGroup>
-            <Label for="nickname">Ник на сервере:</Label>
+            <Label for="username">Логин:</Label>
             <Input
               type="text"
-              name="nickname"
-              placeholder="Только без членов..."
-              value={registerForm.nickname}
-              onChange={e => setRegisterForm({ ...registerForm, nickname: e.target.value })}
+              name="username"
+              value={registerForm.username}
+              onChange={e => setRegisterForm({ ...registerForm, username: e.target.value })}
             />
           </FormGroup>
           <FormGroup>
@@ -104,7 +101,6 @@ const AuthPage = () => {
             <Input
               type="password"
               name="password"
-              placeholder="Придумайте пароль"
               value={registerForm.password}
               onChange={e => setRegisterForm({ ...registerForm, password: e.target.value })}
             />

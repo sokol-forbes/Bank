@@ -1,4 +1,4 @@
-const benefit_matrix = [
+let benefit_matrix = [
   [3.141593, 4.442883, 5.441398, 6.283185, 7.024815, 7.695299, 8.311873, 8.885766, 9.424778],
   [7.874805, 9.364774, 10.36383, 11.13666, 11.77558, 12.32474, 12.80897, 13.24379, 13.63956],
   [15.2697, 16.65172, 17.51744, 18.15883, 18.67246, 19.1029, 19.47456, 19.80235, 20.09605],
@@ -11,7 +11,7 @@ const benefit_matrix = [
   [87.09399, 87.15296, 87.18748, 87.21198, 87.23098, 87.24652, 87.25965, 87.27103, 87.28107],
 ];
 
-const risk_matrix = [
+let risk_matrix = [
   [0.31831, 0.450158, 0.551329, 0.63662, 0.711763, 0.779697, 0.842169, 0.900316, 0.95493],
   [0.253975, 0.302028, 0.334249, 0.359174, 0.379781, 0.397492, 0.413109, 0.427133, 0.439897],
   [0.277847, 0.302994, 0.318747, 0.330418, 0.339764, 0.347596, 0.354359, 0.360323, 0.365667],
@@ -25,9 +25,9 @@ const risk_matrix = [
 ];
 
 const defaultProbabilities = [ 0.1, 0.07, 0.08, 0.25, 0.05, 0.02, 0.12, 0.09, 0.08, 0.14 ];
-const probabilities = null;
+let probabilities = null;
 
-const solutions = [ 5, 7, 12, 15, 17, 20, 21, 25, 30 ];
+let solutions = [ 5, 7, 12, 15, 17, 20, 21, 25, 30 ];
 
 const external_condition = benefit_matrix.length;
 const solution = benefit_matrix[0].length
@@ -185,13 +185,14 @@ function criteria_Gurvica(a) {
   return { alt: max_index, percents: solutions[max_index], mark: max };
 }
 
-function game_method(choice, koef) {
-  //Если вероятности известны, то 0 или -1 для выбора в методе Баеса
-  //Если вероятности неизвестны, то передать число от 1 до 4
-  //1. Если вероятности неизвестны, но полагаем, что все внешние условия равновероятны
-  //2.Если расчивается на наихудшее внешнее условие, через выигрыши
-  //3.Если расчивается на наихудшее внешнее условие, через риски
-  //4.По критерию пессимизма
+function game_method(choice, koef, mathData) {
+  if (mathData) {
+    risk_matrix = mathData.riskMatrix;
+    benefit_matrix = mathData.benefitMatrix;
+    probabilities = mathData.probabilities;
+    solutions = mathData.solutions;
+  }
+
   if ((choice === 0 || choice === -1)) {
     return criteria_Baesa(choice);
   } else if (choice === 1) {

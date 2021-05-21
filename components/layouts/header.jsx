@@ -45,7 +45,7 @@ const Header = () => {
                       alt=""
                       className={styles.header__avatar}
                     />
-                    {user.nickname}
+                    {user.username}
                   </DropdownToggle>
                   <DropdownMenu>
                     <Link href="/profile">

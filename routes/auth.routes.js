@@ -11,13 +11,13 @@ const { probabilities } = require('../utils/gameMethods');
 router.post(
   '/register',
   [
-    check('nickname', 'Ник некорректный 4 симв минимум.').isLength({ min: 4 }),
+    check('username', 'Ник некорректный 4 симв минимум.').isLength({ min: 4 }),
     check('password', 'Пароль некорректный 6 симв минимум.').isLength({
       min: 6,
     }),
   ],
   async (req, res) => {
-    try {
+    // try {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -27,9 +27,9 @@ router.post(
         });
       }
 
-      const { nickname, password } = req.body;
+      const { username, password } = req.body;
 
-      const candidate = await User.findOne({ nickname });
+      const candidate = await User.findOne({ username });
 
       if (candidate) {
         return res
@@ -39,7 +39,7 @@ router.post(
 
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({
-        nickname,
+        username,
         password: hashedPassword,
         isAdmin: false,
         gameMethod: probabilities ? 0 : 1,
@@ -49,11 +49,11 @@ router.post(
       await user.save();
 
       res.status(201).json({ message: 'Пользователь создан!' });
-    } catch (e) {
-      res
-        .status(500)
-        .json({ message: 'Что-то пошло не так, попробуйте снова.' });
-    }
+    // } catch (e) {
+      // res
+        // .status(500)
+        // .json({ message: 'Что-то пошло не так, попробуйте снова.' });
+    // }
   }
 );
 
@@ -61,7 +61,7 @@ router.post(
 router.post(
   '/login',
   [
-    check('nickname', 'Ник некорректный 4 симв минимум.').isLength({ min: 4 }),
+    check('username', 'Ник некорректный 4 симв минимум.').isLength({ min: 4 }),
     check('password', 'Пароль некорректный 6 симв минимум.').isLength({
       min: 6,
     }),
@@ -77,9 +77,9 @@ router.post(
         });
       }
 
-      const { nickname, password } = req.body;
+      const { username, password } = req.body;
 
-      const user = await User.findOne({ nickname });
+      const user = await User.findOne({ username });
 
       if (!user) {
         return res.status(400).json({ message: 'Пользователь не найден.' });

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const User = require('../models/User');
-const Mortgage = require('../models/Mortgage');
+const MathData = require('../models/MathData');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
@@ -53,7 +53,7 @@ router.patch('/profile', authenticateToken, async (req, res) => {
 
       const { user, body, file } = req;
 
-      await check('nickname')
+      await check('username')
         .isLength({ min: 4 })
         .withMessage('Минимум 4 символа')
         .run(req);
@@ -75,8 +75,8 @@ router.patch('/profile', authenticateToken, async (req, res) => {
       }
 
       if (
-        body.nickname !== user.nickname &&
-        (await User.findOne({ nickname: body.nickname }))
+        body.username !== user.username &&
+        (await User.findOne({ username: body.username }))
       ) {
         return res
           .status(500)
@@ -92,7 +92,7 @@ router.patch('/profile', authenticateToken, async (req, res) => {
         user.avatar = file.filename;
       }
 
-      user.nickname = body.nickname;
+      user.username = body.username;
 
       user.save();
 
@@ -171,7 +171,16 @@ router.patch(
 
       const { gameMethod, koef } = user;
 
-      user.links.push({ mortgageId: id, ...game_method(gameMethod, koef), sum, date: new Date() });
+      const data = await (await MathData.find({})).find(
+        (__, index) => index === 0
+      );
+
+      user.links.push({ mortgageId: id, ...game_method(gameMethod, koef, {
+        riskMatrix: JSON.parse(data.riskMatrix),
+        benefitMatrix: JSON.parse(data.benefitMatrix),
+        probabilities: data.probabilities ? JSON.parse(data.probabilities) : null,
+        solutions: JSON.parse(data.solutions),
+      }), sum, date: new Date() });
 
       await user.save();
 

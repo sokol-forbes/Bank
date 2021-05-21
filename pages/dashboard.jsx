@@ -46,7 +46,7 @@ const Dashboard = (props) => {
   const router = useRouter();
 
   const handleDeleteUser = async (userToRemove) => {
-    if (confirm(`Вы уверены что хотите удалить ${userToRemove.nickname}?`)) {
+    if (confirm(`Вы уверены что хотите удалить ${userToRemove.username}?`)) {
       try {
         const data = await request(
           `/api/user/${userToRemove._id}`,
@@ -220,7 +220,6 @@ const Dashboard = (props) => {
                 <tr>
                   <th></th>
                   <th>Логин</th>
-                  <th>ФИО</th>
                   <th>Админ</th>
                   <th>Информация</th>
                   <th></th>
@@ -237,8 +236,7 @@ const Dashboard = (props) => {
                           alt=""
                         />
                       </th>
-                      <td>{user.nickname}</td>
-                      <td>КАкой нибудь фио</td>
+                      <td>{user.username}</td>
                       <td>{user.isAdmin ? 'Да' : 'Нет'}</td>
                       <td>
                         {!user.isAdmin && (
@@ -277,7 +275,7 @@ const Dashboard = (props) => {
                   <ModalHeader
                     toggle={() => setShowUserInfoModal(!showUserInfoModal)}
                   >
-                    Информация пользователя {selectedUser.nickname}
+                    Информация пользователя {selectedUser.username}
                   </ModalHeader>
                   <ModalBody>
                     <h1 className="mb-4">Ипотеки:</h1>

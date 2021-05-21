@@ -22,7 +22,7 @@ import useGlobalState from '../hooks/useGlobalState';
 import { defaultProbabilities } from '../utils/gameMethods';
 import Chart from 'chart.js/auto';
 import graphStyles from '../styles/components/graph.module.scss';
-import { dateDataset } from '../utils/graph';
+import { dateDataset, circleDataset } from '../utils/graph';
 
 const MathData = (props) => {
   const user = useUser();
@@ -56,33 +56,11 @@ const MathData = (props) => {
   };
 
   useEffect(() => {
-    const dataset = dateDataset(props.users, props.mortgages);
-
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const myChart = new Chart(ctx, {
+    const dataChart = new Chart(ctx, {
       type: 'line',
-      data: {
-        labels: ['1', '2', '3', '4', '5', '6'],
-        datasets: [
-          {
-            label: 'Ипотека 1',
-            data: [3, 12, 3, 7, 2, 3],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 3,
-            cubicInterpolationMode: 'monotone',
-          },
-          {
-            label: 'Ипотека 2',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 3,
-            cubicInterpolationMode: 'monotone',
-          },
-        ],
-      },
+      data: dateDataset(props.users, props.mortgages),
       options: {
         scales: {
           y: {
@@ -92,7 +70,18 @@ const MathData = (props) => {
       },
     });
 
-    return () => myChart.destroy();
+    const circleCanvas = document.getElementById('circle_canvas');
+    const circleCtx = circleCanvas.getContext('2d');
+
+    const circleChart = new Chart(circleCtx, {
+      type: 'pie',
+      data: circleDataset(props.users, props.mortgages),
+    });
+
+    return () => {
+      dataChart.destroy();
+      circleChart.destroy();
+    };
   }, []);
 
   const onSubmit = async (e) => {
@@ -120,8 +109,12 @@ const MathData = (props) => {
 
   return (
     <div>
+      <h1 className="mb-4 mt-5">Статистика взятия ипотек:</h1>
       <div style={{ position: 'relative', height: '531px', width: '100%' }}>
         <canvas id="canvas"></canvas>
+      </div>
+      <div className="mx-auto mt-5" style={{ position: 'relative', height: 531, width: 531 }}>
+        <canvas id="circle_canvas" height="531" width="531" style={{ display: 'block', height: 531, width: 531 }}></canvas>
       </div>
       <h1 className="mb-4 mt-5">Матрица рисков:</h1>
       {data.riskMatrix?.map((row, index) => (

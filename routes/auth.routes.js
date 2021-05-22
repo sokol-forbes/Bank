@@ -12,12 +12,13 @@ router.post(
   '/register',
   [
     check('username', 'Ник некорректный 4 симв минимум.').isLength({ min: 4 }),
+    check('fio', 'Ник некорректный 10 симв минимум.').isLength({ min: 10 }),
     check('password', 'Пароль некорректный 6 симв минимум.').isLength({
       min: 6,
     }),
   ],
   async (req, res) => {
-    // try {
+    try {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -27,7 +28,7 @@ router.post(
         });
       }
 
-      const { username, password } = req.body;
+      const { username, password, fio } = req.body;
 
       const candidate = await User.findOne({ username });
 
@@ -40,6 +41,7 @@ router.post(
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({
         username,
+        fio,
         password: hashedPassword,
         isAdmin: false,
         gameMethod: probabilities ? 0 : 1,
@@ -49,11 +51,11 @@ router.post(
       await user.save();
 
       res.status(201).json({ message: 'Пользователь создан!' });
-    // } catch (e) {
-      // res
-        // .status(500)
-        // .json({ message: 'Что-то пошло не так, попробуйте снова.' });
-    // }
+    } catch (e) {
+      res
+        .status(500)
+        .json({ message: 'Что-то пошло не так, попробуйте снова.' });
+    }
   }
 );
 
@@ -94,7 +96,7 @@ router.post(
       }
 
       const token = jwt.sign({ _id: user.id }, config.get('jwtSecret'), {
-        expiresIn: '1h',
+        expiresIn: '24h',
       });
 
       res.json({

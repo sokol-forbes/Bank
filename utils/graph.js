@@ -42,6 +42,8 @@ const dateDataset = (users, mortgages) => {
       });
   });
 
+  dates = dates.map(date => new Date(date)).sort((a, b) => a - b).map(date => date.toDateString());
+
   dates.forEach((date, index) => {
     const linksInDate = links.filter((link) => link.date === date);
 
@@ -68,23 +70,10 @@ const dateDataset = (users, mortgages) => {
 
 const circleDataset = (users, mortgages) => {
   const { datasets } = dateDataset(users, mortgages);
-
-
+  
   const labels = datasets.map(dataset => dataset.label);
   const data = datasets.map(dataset => dataset.data.reduce((a, b) => a + b));
   const backgroundColor = datasets.map(dataset => dataset.borderColor);
-
-
-  console.log(datasets, labels, data)
-
-  // labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
-  // datasets: [
-  //   {
-  //     label: 'Dataset 1',
-  //     data: Utils.numbers(NUMBER_CFG),
-  //     backgroundColor: Object.values(Utils.CHART_COLORS),
-  //   }
-  // ]
 
   return {
     labels,

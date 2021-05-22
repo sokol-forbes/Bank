@@ -19,7 +19,7 @@ import useHttp from '../hooks/useHttp';
 import { setCookie } from 'nookies';
 import useGlobalState from '../hooks/useGlobalState';
 import { probabilities } from '../utils/gameMethods';
-
+ 
 const MortgageCard = (props) => {
   const [getModal, setGetModal] = useState(false);
   const user = useUser();
@@ -27,10 +27,10 @@ const MortgageCard = (props) => {
   const { request } = useHttp();
   const [_, dispatch] = useGlobalState();
   const [sum, setSum] = useState(1000);
-
+ 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+ 
     try {
       const data = await request(
         '/api/user/add_mortgage',
@@ -39,7 +39,7 @@ const MortgageCard = (props) => {
         { Authorization: `Bearer ${user.token}` }
       );
       const userData = { ...user, links: data.links };
-
+ 
       setCookie(
         null,
         process.env.COOKIES_STORAGE_NAME,
@@ -55,22 +55,52 @@ const MortgageCard = (props) => {
       if (e.errors) e.errors.forEach((error) => setError(error.msg));
     }
   };
-
+ 
   return (
     <Col className="mb-4" key={props._id}>
       <div className={styles.card}>
-        <h2 className={`${styles.title} mb-4`}><b>{props.title}</b></h2>
+        <h2 className={`${styles.title} mb-4`}>
+          <b>{props.title}</b>
+        </h2>
         <p className={`${styles.description} mb-4`}>{props.description}</p>
-        { props.percents && <p className="mb-0"><b>Процент:</b> {props.percents}%</p> }
-        { props.sum && <p className="mb-0"><b>Сумма:</b> {props.sum}$</p> }
-        { props.sum && props.percents && <p className="mb-0"><b>К оптате:</b> {props.sum + (props.sum * props.percents / 100)}$</p> }
-        {props.showButton && (
-          <Button color="primary" onClick={() => setGetModal(!getModal)} className="w-100">Взять</Button>
+        {props.percents && (
+          <p className="mb-0">
+            <b>Процент:</b> {props.percents}%
+          </p>
         )}
-        {
-          props.onRemove &&
-          <Button color="primary" onClick={props.onRemove} className="w-100 mt-3">Убрать</Button>
-        }
+        {props.sum && (
+          <p className="mb-0">
+            <b>Сумма:</b> {props.sum}$
+          </p>
+        )}
+        {props.sum && props.percents && (
+          <p className="mb-0">
+            <b>К оптате:</b> {props.sum + (props.sum * props.percents) / 100}$
+          </p>
+        )}
+        {props.users != null && (
+          <p className="mb-0">
+            <b>Пользователей взяло:</b> {props.users}
+          </p>
+        )}
+        {props.showButton && (
+          <Button
+            color="primary"
+            onClick={() => setGetModal(!getModal)}
+            className="w-100"
+          >
+            Взять
+          </Button>
+        )}
+        {props.onRemove && (
+          <Button
+            color="primary"
+            onClick={props.onRemove}
+            className="w-100 mt-3"
+          >
+            Убрать
+          </Button>
+        )}
       </div>
       <Modal
         isOpen={getModal}
@@ -108,5 +138,6 @@ const MortgageCard = (props) => {
     </Col>
   );
 };
-
+ 
 export default MortgageCard;
+ 

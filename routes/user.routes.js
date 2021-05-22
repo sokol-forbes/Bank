@@ -58,6 +58,11 @@ router.patch('/profile', authenticateToken, async (req, res) => {
         .withMessage('Минимум 4 символа')
         .run(req);
 
+      await check('fio')
+        .isLength({ min: 10 })
+        .withMessage('Минимум 10 символов')
+        .run(req);
+
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -93,6 +98,7 @@ router.patch('/profile', authenticateToken, async (req, res) => {
       }
 
       user.username = body.username;
+      user.fio = body.fio;
 
       user.save();
 

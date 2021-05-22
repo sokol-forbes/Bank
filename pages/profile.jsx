@@ -78,11 +78,22 @@ const Profile = () => {
           </FormGroup>
           <FormGroup>
             <Label for="name">Логин:</Label>
+
             <Input
               type="text"
               name="username"
               id="username"
               defaultValue={user.username}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="name">ФИО:</Label>
+            
+            <Input
+              type="text"
+              name="fio"
+              id="fio"
+              defaultValue={user.fio}
             />
           </FormGroup>
           <Button color="primary">Submit</Button>

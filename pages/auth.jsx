@@ -21,6 +21,7 @@ const AuthPage = () => {
   const [registerForm, setRegisterForm] = useState({
     username: '',
     password: '',
+    fio: '',
   });
 
   const registerHandler = e => {
@@ -94,6 +95,15 @@ const AuthPage = () => {
               name="username"
               value={registerForm.username}
               onChange={e => setRegisterForm({ ...registerForm, username: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="fio">ФИО:</Label>
+            <Input
+              type="text"
+              name="fio"
+              value={registerForm.fio}
+              onChange={e => setRegisterForm({ ...registerForm, fio: e.target.value })}
             />
           </FormGroup>
           <FormGroup>

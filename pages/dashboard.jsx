@@ -41,6 +41,8 @@ const Dashboard = (props) => {
     koef: null,
   });
   const [users, setUsers] = useState(props.users);
+  const [sortOrder, setSortOrder] = useState(true);
+  const [selectedMortgage, setSelectedMortgage] = useState(null);
 
   const user = useUser();
   const router = useRouter();
@@ -141,21 +143,57 @@ const Dashboard = (props) => {
         {user.isAdmin ? (
           <>
             <h1 className="mb-4">Ипотеки:</h1>
-            {!!mortgages?.length ? (
-              <Row xs="1" md="3" className="mb-3">
-                {mortgages.map((mortgage) => (
-                  <MortgageCard {...mortgage} key={mortgage._id} />
-                ))}
-              </Row>
+
+            {!selectedMortgage ? (
+              !!mortgages?.length ? (
+                <Row xs="1" md="3" className="mb-3">
+                  {mortgages.map((mortgage) => (
+                    <MortgageCard {...mortgage} key={mortgage._id} />
+                  ))}
+                </Row>
+              ) : (
+                <p>Нет ипотек</p>
+              )
             ) : (
-              <p>Нет ипотек</p>
+              <Row xs="1" md="3" className="mb-3">
+                <MortgageCard
+                  {...mortgages.find(
+                    (mortgage) => mortgage._id === selectedMortgage
+                  )}
+                  users={users.filter(user => !!user.links?.find(link => selectedMortgage === link.mortgageId))?.length}
+                />
+              </Row>
             )}
-            <Button
-              color="primary"
-              onClick={() => setShowAddMortgageModal(!showAddMortgageModal)}
-            >
-              Добавить ипотеку
-            </Button>
+            <Row>
+              <Col>
+                <Button
+                  color="primary"
+                  onClick={() => setShowAddMortgageModal(!showAddMortgageModal)}
+                >
+                  Добавить ипотеку
+                </Button>
+              </Col>
+              <Col>
+                <div className="d-flex align-items-center">
+                  Показать:&nbsp;&nbsp;&nbsp;
+                  <Input
+                    type="select"
+                    name="select"
+                    id="exampleSelect"
+                    onChange={(e) =>
+                      setSelectedMortgage(
+                        e.target.value === 'all' ? null : e.target.value
+                      )
+                    }
+                  >
+                    <option value="all">Все</option>
+                    {mortgages.map((mortgage) => (
+                      <option value={mortgage._id} key={mortgage._id}>{mortgage.title}</option>
+                    ))}
+                  </Input>
+                </div>
+              </Col>
+            </Row>
             <Modal
               isOpen={showAddMortgageModal}
               toggle={() => setShowAddMortgageModal(!showAddMortgageModal)}
@@ -219,7 +257,42 @@ const Dashboard = (props) => {
               <thead>
                 <tr>
                   <th></th>
-                  <th>Логин</th>
+                  <th>
+                    Логин{' '}
+                    <i
+                      className="fas fa-sort"
+                      onClick={() => {
+                        setUsers(
+                          users.sort((a, b) => {
+                            if (
+                              sortOrder
+                                ? a.username > b.username
+                                : a.name < b.username
+                            )
+                              return 1;
+                            else return -1;
+                          })
+                        );
+                        setSortOrder(!sortOrder);
+                      }}
+                    ></i>
+                  </th>
+                  <th>
+                    ФИО{' '}
+                    <i
+                      className="fas fa-sort"
+                      onClick={() => {
+                        setUsers(
+                          users.sort((a, b) => {
+                            if (sortOrder ? a.fio > b.fio : a.name < b.fio)
+                              return 1;
+                            else return -1;
+                          })
+                        );
+                        setSortOrder(!sortOrder);
+                      }}
+                    ></i>
+                  </th>
                   <th>Админ</th>
                   <th>Информация</th>
                   <th></th>
@@ -237,6 +310,7 @@ const Dashboard = (props) => {
                         />
                       </th>
                       <td>{user.username}</td>
+                      <td>{user.fio}</td>
                       <td>{user.isAdmin ? 'Да' : 'Нет'}</td>
                       <td>
                         {!user.isAdmin && (
@@ -269,7 +343,7 @@ const Dashboard = (props) => {
               <Modal
                 isOpen={showUserInfoModal}
                 toggle={() => setShowUserInfoModal(!showUserInfoModal)}
-                className="modal-lg"
+                className="modal-xl"
               >
                 <Form onSubmit={handleUserUpdate}>
                   <ModalHeader
@@ -367,7 +441,11 @@ const Dashboard = (props) => {
                 </Form>
               </Modal>
             )}
-            <MathData data={props.mathData} users={users} mortgages={mortgages} />
+            <MathData
+              data={props.mathData}
+              users={users}
+              mortgages={mortgages}
+            />
           </>
         ) : (
           <>

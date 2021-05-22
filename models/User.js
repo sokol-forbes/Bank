@@ -6,6 +6,10 @@ const schema = new Schema({
     required: true,
     unique: true,
   },
+  fio: {
+    required: true,
+    type: String,
+  },
   password: {
     type: String,
     required: true,

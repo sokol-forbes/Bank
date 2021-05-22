@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps, user }) => {
         <>
           <noscript dangerouslySetInnerHTML={{ '__html': '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=833641527491259&ev=PageView&noscript=1" />' }}>
           </noscript>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         </>
       </Head>
       <Provider user={user}>

@@ -394,7 +394,7 @@ const Dashboard = (props) => {
                             <option value={-1}>
                               Метод байаса по выйгрышам
                             </option>
-                            <option value={0}>Метод байаса по рискам</option>
+                            <option value={0}>Метод Байеса по рискам</option>
                           </>
                         ) : (
                           <>

@@ -71,9 +71,9 @@ const dateDataset = (users, mortgages) => {
 const circleDataset = (users, mortgages) => {
   const { datasets } = dateDataset(users, mortgages);
   
-  const labels = datasets.map(dataset => dataset.label);
-  const data = datasets.map(dataset => dataset.data.reduce((a, b) => a + b));
-  const backgroundColor = datasets.map(dataset => dataset.borderColor);
+  const labels = datasets?.map(dataset => dataset.label);
+  const data = datasets?.map(dataset => dataset.data.reduce((a, b) => a + b));
+  const backgroundColor = datasets?.map(dataset => dataset.borderColor);
 
   return {
     labels,

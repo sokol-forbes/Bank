@@ -73,9 +73,19 @@ const MortgageCard = (props) => {
             <b>Сумма:</b> {props.sum}$
           </p>
         )}
+        {props.date && (
+          <p className="mb-0">
+            <b>Дата получения:</b> {new Date(props.date).toDateString()}
+          </p>
+        )}
         {props.sum && props.percents && (
           <p className="mb-0">
-            <b>К оптате:</b> {props.sum + (props.sum * props.percents) / 100}$
+            <b>К оптате:</b> {Math.round(props.sum + (props.sum * props.percents) / 100)}$
+          </p>
+        )}
+        {props.mark && (
+          <p className="mb-0">
+            <b>Оценка данного решения </b> {(props.mark.toFixed(3))}
           </p>
         )}
         {props.users != null && (

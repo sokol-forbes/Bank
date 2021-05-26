@@ -122,9 +122,10 @@ const MathData = (props) => {
           {row.map((item, itemIndex) => (
             <Col key={itemIndex} className="px-1">
               <Input
-                value={item}
+                value={item.toFixed(4)}
                 type="number"
                 min="0"
+                step="0.0001"
                 onChange={(e) => {
                   const newMatrix = [...data.riskMatrix];
                   newMatrix[index][itemIndex] = Number(e.target.value);
@@ -141,9 +142,10 @@ const MathData = (props) => {
           {row.map((item, itemIndex) => (
             <Col key={itemIndex} className="px-1">
               <Input
-                value={item}
+                value={item.toFixed(3)}
                 type="number"
                 min="0"
+                step="0.001"
                 onChange={(e) => {
                   const newMatrix = [...data.benefitMatrix];
                   newMatrix[index][itemIndex] = Number(e.target.value);
@@ -163,6 +165,8 @@ const MathData = (props) => {
               value={item}
               type="number"
               min="0"
+              step="0.5"
+              max="99.95"
               onChange={(e) => {
                 const newArray = [...data.solutions];
                 newArray[index] = Number(e.target.value);
@@ -181,6 +185,7 @@ const MathData = (props) => {
               value={item}
               type="number"
               min="0"
+              step="0.001"
               disabled={!isProbabilities}
               onChange={(e) => {
                 const newArray = [...data.probabilities];

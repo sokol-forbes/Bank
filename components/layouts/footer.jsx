@@ -17,7 +17,7 @@ const Footer = () => {
           <i className="fab fa-vk"></i>
         </a>
         <br />
-        <p> This site made with <i class="far fa-heart" aria-hidden="true"></i> by
+        <p> This site made with <i className="far fa-heart" aria-hidden="false"></i> by
           <a href="https://www.facebook.com/sasha.sokol.7"> Alexander Sokolovsky</a>
         </p>
       </Container>
